@@ -31,7 +31,7 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 ## Phase 1 — Project Setup
 
 - [x] Initialize git repository, default branch `main`, add `.gitignore` (node_modules, `.env*`, build artifacts)
-- [ ] Initialize npm workspaces root `package.json` with `apps/web`, `apps/api`, `packages/shared`
+- [x] Initialize npm workspaces root `package.json` with `apps/web`, `apps/api`, `packages/shared`
 - [ ] Scaffold `apps/web` with Next.js (TypeScript template)
 - [ ] Scaffold `apps/api` with Express (TypeScript)
 - [ ] Scaffold `packages/shared` with a `tsconfig.json` and an initial `zod` schema file
