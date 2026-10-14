@@ -1,6 +1,8 @@
-import express, { type Request, type Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import express, { type Request, type Response } from "express";
+
+import { VerdictSchema } from "@qraksha/shared";
 
 dotenv.config();
 
