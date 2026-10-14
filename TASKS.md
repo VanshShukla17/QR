@@ -21,16 +21,16 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 
 ## Phase 0 — Planning
 
-- [ ] Validate product assumptions in `PRD.md` (identity-tier ramp speeds, trust-score formula, location-radius default) against the team's actual hackathon judging/demo constraints
-- [ ] Review `PRD.md` in full with all contributors
-- [ ] Review `ARCHITECTURE.md` in full, confirm the monorepo layout assumption is acceptable
-- [ ] Confirm the stack choices in `ARCHITECTURE.md` Section 2 (no substitutions without updating the document)
-- [ ] Confirm the data model in `ARCHITECTURE.md` Section 4 (entity list and relationships)
-- [ ] Confirm the API contract in `ARCHITECTURE.md` Section 6 (route list and conventions)
+- [x] Validate product assumptions in `PRD.md` (identity-tier ramp speeds, trust-score formula, location-radius default) against the team's actual hackathon judging/demo constraints
+- [x] Review `PRD.md` in full with all contributors
+- [x] Review `ARCHITECTURE.md` in full, confirm the monorepo layout assumption is acceptable
+- [x] Confirm the stack choices in `ARCHITECTURE.md` Section 2 (no substitutions without updating the document)
+- [x] Confirm the data model in `ARCHITECTURE.md` Section 4 (entity list and relationships)
+- [x] Confirm the API contract in `ARCHITECTURE.md` Section 6 (route list and conventions)
 
 ## Phase 1 — Project Setup
 
-- [ ] Initialize git repository, default branch `main`, add `.gitignore` (node_modules, `.env*`, build artifacts)
+- [x] Initialize git repository, default branch `main`, add `.gitignore` (node_modules, `.env*`, build artifacts)
 - [ ] Initialize npm workspaces root `package.json` with `apps/web`, `apps/api`, `packages/shared`
 - [ ] Scaffold `apps/web` with Next.js (TypeScript template)
 - [ ] Scaffold `apps/api` with Express (TypeScript)
