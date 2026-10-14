@@ -15,13 +15,13 @@ app.use(express.json());
 app.get("/api/v1/health", (_req: Request, res: Response) => {
   res.status(200).json({
     status: "ok",
+    supportedVerdicts: VerdictSchema.options,
     timestamp: new Date().toISOString(),
   });
 });
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
-    // eslint-disable-next-line no-console
     console.log(`QRaksha API listening on port ${port}`);
   });
 }
