@@ -44,7 +44,7 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 - [x] Configure Playwright for `apps/web` E2E tests
 - [x] Add a pre-commit git hook (via `husky` + `lint-staged`) running lint + format on staged files
 - [x] Establish base folder structure inside `apps/api` (`/routes`, `/agents`, `/services`, `/db`, `/middleware`)
-- [ ] Establish base folder structure inside `apps/web` (`/app` routes matching `PRD.md` Section 7's information architecture)
+- [x] Establish base folder structure inside `apps/web` (`/app` routes matching `PRD.md` Section 7's information architecture)
 - [ ] Build the application shell: `apps/web` root layout, bottom tab navigation component, theme tokens matching `PRD.md` Section 6's color system
 - [ ] Provision a Supabase project (dev) and connect `apps/api` to it via the service-role key
 - [ ] Write the initial Supabase migration creating the `identity` and `comparison` schemas (empty, tables added in Phase 2)
