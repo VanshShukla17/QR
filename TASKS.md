@@ -42,7 +42,7 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 - [x] Configure ESLint at the repo root with a TypeScript config, extended per-workspace as needed
 - [x] Configure Vitest for unit tests in `apps/api` and `packages/shared`
 - [x] Configure Playwright for `apps/web` E2E tests
-- [ ] Add a pre-commit git hook (via `husky` + `lint-staged`) running lint + format on staged files
+- [x] Add a pre-commit git hook (via `husky` + `lint-staged`) running lint + format on staged files
 - [ ] Establish base folder structure inside `apps/api` (`/routes`, `/agents`, `/services`, `/db`, `/middleware`)
 - [ ] Establish base folder structure inside `apps/web` (`/app` routes matching `PRD.md` Section 7's information architecture)
 - [ ] Build the application shell: `apps/web` root layout, bottom tab navigation component, theme tokens matching `PRD.md` Section 6's color system
