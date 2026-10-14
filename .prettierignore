@@ -9,3 +9,4 @@ playwright-report
 *.log
 package-lock.json
 .git
+.husky/_
