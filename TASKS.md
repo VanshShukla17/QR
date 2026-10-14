@@ -85,11 +85,11 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 
 ### Task 3 — Reference capture & location binding (backend)
 
-- [ ] Create `comparison.merchant_credential`, `comparison.registered_qr`, `comparison.reference_embedding` migrations (enable `pgvector`)
-- [ ] Implement transient photo upload endpoint (`POST /api/v1/merchants/register/reference`) using Supabase Storage as a buffer
-  - [ ] Extract embedding synchronously
-  - [ ] Delete the uploaded photo object immediately after extraction succeeds or fails
-- [ ] Implement location-binding logic: compare submitted GPS to `identity.merchant_identity.kyc_address` (geocoded), flag `location_variance` if outside the configured radius (does not block)
+- [x] Create `comparison.merchant_credential`, `comparison.registered_qr`, `comparison.reference_embedding` migrations (enable `pgvector`)
+- [x] Implement transient photo upload endpoint (`POST /api/v1/merchants/register/reference`) using Supabase Storage as a buffer
+  - [x] Extract embedding synchronously
+  - [x] Delete the uploaded photo object immediately after extraction succeeds or fails
+- [x] Implement location-binding logic: compare submitted GPS to `identity.merchant_identity.kyc_address` (geocoded), flag `location_variance` if outside the configured radius (does not block)
 
 **Depends on:** Task 1.
 

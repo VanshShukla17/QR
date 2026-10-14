@@ -62,6 +62,29 @@ export const RegisterIdentityResponseSchema = z.object({
 });
 export type RegisterIdentityResponse = z.infer<typeof RegisterIdentityResponseSchema>;
 
+export const RegisterReferenceRequestSchema = z.object({
+  merchantId: z.string().uuid("Invalid merchantId"),
+  qrPayload: z.string().min(1, "QR payload is required").max(2048),
+  photoBase64: z.string().min(10, "Photo is required"),
+  mimeType: z.enum(["image/jpeg", "image/png"]).default("image/jpeg"),
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+  boundRadiusM: z.number().int().positive().default(100),
+});
+export type RegisterReferenceRequest = z.infer<typeof RegisterReferenceRequestSchema>;
+
+export const RegisterReferenceResponseSchema = z.object({
+  data: z.object({
+    credentialId: z.string().uuid(),
+    registeredQrId: z.string().uuid(),
+    qrPayloadHash: z.string(),
+    status: CredentialStatusSchema,
+    locationVariance: z.boolean(),
+    embeddingExtracted: z.boolean(),
+  }),
+});
+export type RegisterReferenceResponse = z.infer<typeof RegisterReferenceResponseSchema>;
+
 export const ProofOfPossessionRequestSchema = z.object({
   credentialId: z.string().uuid(),
   transactionRef: z.string().min(4).optional(),

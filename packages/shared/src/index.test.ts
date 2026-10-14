@@ -4,6 +4,7 @@ import {
   RegisterIdentityGstSchema,
   RegisterIdentityPennyDropSchema,
   RegisterIdentityRequestSchema,
+  RegisterReferenceRequestSchema,
   VerdictSchema,
 } from "./index.js";
 
@@ -67,5 +68,33 @@ describe("Shared Schemas", () => {
 
   it("validates verdict enum values", () => {
     expect(VerdictSchema.options).toEqual(["VERIFIED", "RECENTLY_REGISTERED", "WARNING"]);
+  });
+
+  it("validates reference registration request correctly", () => {
+    const validRef = {
+      merchantId: "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+      qrPayload: "upi://pay?pa=sharmacanteen@okaxis&pn=Sharma%20Canteen",
+      photoBase64: "aGVsbG8gd29ybGQ=",
+      mimeType: "image/jpeg" as const,
+      latitude: 19.076,
+      longitude: 72.8777,
+      boundRadiusM: 100,
+    };
+
+    const parsed = RegisterReferenceRequestSchema.safeParse(validRef);
+    expect(parsed.success).toBe(true);
+  });
+
+  it("rejects invalid reference coordinates or missing photo", () => {
+    const invalidRef = {
+      merchantId: "not-a-uuid",
+      qrPayload: "",
+      photoBase64: "",
+      latitude: 100, // invalid latitude > 90
+      longitude: 72.8777,
+    };
+
+    const parsed = RegisterReferenceRequestSchema.safeParse(invalidRef);
+    expect(parsed.success).toBe(false);
   });
 });
