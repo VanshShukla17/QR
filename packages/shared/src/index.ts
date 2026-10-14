@@ -27,7 +27,7 @@ export const VerdictReasonSchema = z.enum([
 ]);
 export type VerdictReason = z.infer<typeof VerdictReasonSchema>;
 
-// --- API Request Schemas ---
+// --- API Request & Response Schemas ---
 
 export const RegisterIdentityGstSchema = z.object({
   path: z.literal("gst_udyam"),
@@ -51,6 +51,16 @@ export const RegisterIdentityRequestSchema = z.discriminatedUnion("path", [
   RegisterIdentityPennyDropSchema,
 ]);
 export type RegisterIdentityRequest = z.infer<typeof RegisterIdentityRequestSchema>;
+
+export const RegisterIdentityResponseSchema = z.object({
+  data: z.object({
+    merchantId: z.string().uuid(),
+    identityId: z.string().uuid(),
+    identityTier: IdentityTierSchema,
+    displayName: z.string(),
+  }),
+});
+export type RegisterIdentityResponse = z.infer<typeof RegisterIdentityResponseSchema>;
 
 export const ProofOfPossessionRequestSchema = z.object({
   credentialId: z.string().uuid(),
@@ -97,6 +107,7 @@ export const ApiErrorEnvelopeSchema = z.object({
     details: z.union([z.string(), z.array(ApiErrorDetailSchema)]).optional(),
     correlationId: z.string().optional(),
     retryAfterSeconds: z.number().optional(),
+    disputeUrl: z.string().optional(),
   }),
 });
 export type ApiErrorEnvelope = z.infer<typeof ApiErrorEnvelopeSchema>;

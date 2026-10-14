@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import express, { type Request, type Response } from "express";
 
 import { VerdictSchema } from "@qraksha/shared";
+import { errorHandler } from "./middleware/index.js";
+import { apiRouter } from "./routes/index.js";
 
 dotenv.config();
 
@@ -19,6 +21,10 @@ app.get("/api/v1/health", (_req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+app.use("/api/v1", apiRouter);
+
+app.use(errorHandler);
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {

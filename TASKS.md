@@ -54,12 +54,12 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 
 ### Task 1 — Merchant identity registration (backend)
 
-- [ ] Create `identity.merchant_identity` and `public.merchant` migrations per `ARCHITECTURE.md` Section 5
-  - [ ] Add RLS policies restricting `identity.merchant_identity` to owning merchant + service role
-  - [ ] Add unique constraint on `gst_udyam_number`
-- [ ] Implement `POST /api/v1/merchants/register/identity` (mocked GST/Udyam+OTP path and mocked penny-drop path, per `PRD.md` Feature: Merchant Registration)
-  - [ ] `zod` request schema in `packages/shared`
-  - [ ] Duplicate-GST conflict handling (409 + dispute-channel pointer)
+- [x] Create `identity.merchant_identity` and `public.merchant` migrations per `ARCHITECTURE.md` Section 5
+  - [x] Add RLS policies restricting `identity.merchant_identity` to owning merchant + service role
+  - [x] Add unique constraint on `gst_udyam_number`
+- [x] Implement `POST /api/v1/merchants/register/identity` (mocked GST/Udyam+OTP path and mocked penny-drop path, per `PRD.md` Feature: Merchant Registration)
+  - [x] `zod` request schema in `packages/shared`
+  - [x] Duplicate-GST conflict handling (409 + dispute-channel pointer)
 
 **Depends on:** Phase 1 complete.
 
