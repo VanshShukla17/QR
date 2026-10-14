@@ -7,17 +7,20 @@ QRaksha is a merchant self-audit tool that detects when a physical UPI QR sticke
 ## 2. Mandatory Context Loading
 
 Before changing anything, read, in order:
+
 ```text
 AGENTS.md
 PRD.md
 ARCHITECTURE.md
 TASKS.md
 ```
+
 Then identify the current task: the first task in `TASKS.md` with an unchecked box, read top to bottom. Work on that task and nothing else in this session unless the user explicitly directs otherwise.
 
 ## 3. One-Task-at-a-Time Rule
 
 The agent must:
+
 - Never skip ahead to a later task, even if it looks easy or related.
 - Never implement multiple unrelated tasks in one session.
 - Never silently expand a task's scope beyond its stated subtasks and "Done when" criteria.
@@ -39,6 +42,7 @@ npm run typecheck --workspaces       # typecheck
 npm run test --workspaces            # test (Vitest)
 npm run test:e2e --workspace=apps/web # test:e2e (Playwright)
 ```
+
 If a workspace's `package.json` doesn't yet define one of these scripts, add it as part of the Phase 1 setup task rather than working around its absence.
 
 ## 5. Code Style
@@ -50,13 +54,14 @@ If a workspace's `package.json` doesn't yet define one of these scripts, add it 
 - **Folder organization:** Mirrors `ARCHITECTURE.md`'s system architecture — `apps/api/routes`, `/agents`, `/services`, `/db`, `/middleware`; `apps/web/app/<route>` per `PRD.md` Section 7's information architecture.
 - **Import ordering:** Node builtins → external packages → `packages/shared` → relative imports, each group blank-line separated (enforced by ESLint import-order rule).
 - **Function size:** Prefer functions under ~40 lines; a longer function is a signal to extract a named helper, especially inside the agent orchestrator.
-- **Comments:** Explain *why*, not *what*; every non-obvious architectural tradeoff already documented in `ARCHITECTURE.md` doesn't need re-explaining in code comments — link to the section instead.
+- **Comments:** Explain _why_, not _what_; every non-obvious architectural tradeoff already documented in `ARCHITECTURE.md` doesn't need re-explaining in code comments — link to the section instead.
 - **Abstraction rules:** No abstraction without at least two current call sites needing it. Do not build a generic "agent framework" — five concrete agent modules calling one shared Gemini-client wrapper is sufficient (per `ARCHITECTURE.md` Section 2).
 - **Dependency rules:** See Section 13.
 
 ## 6. Architecture Rules
 
 The agent must:
+
 - Follow `ARCHITECTURE.md` as the source of truth for stack, data model, and API shape.
 - Avoid unnecessary dependencies (Section 13).
 - Avoid premature abstraction and premature optimization (see `ARCHITECTURE.md` Section 11, "what NOT to optimize prematurely").
@@ -78,6 +83,7 @@ The agent must:
 ## 8. Security Rules
 
 The agent must:
+
 - Validate all external input via the shared `zod` schemas in `packages/shared` before it reaches business logic.
 - Sanitize/validate uploaded file types and sizes per `ARCHITECTURE.md` Section 8 before processing.
 - Never trust client-supplied authorization claims — always re-derive the caller's identity/role from the validated JWT, never from a request body field.
@@ -124,6 +130,7 @@ Whenever an implementation detail forces a change to a decision recorded in `PRD
 ## 13. Dependency Rules
 
 Before adding any dependency:
+
 1. Confirm the functionality can't reasonably be built with what's already in the stack (`ARCHITECTURE.md` Section 2).
 2. Confirm the package is actively maintained (recent releases, no long-abandoned status).
 3. Check its bundle-size/runtime impact, especially for anything added to `apps/web`.
@@ -143,6 +150,7 @@ Avoid dependency sprawl — this project's stack is deliberately narrow (Next.js
 ## 15. AI Coding Behavior
 
 The AI agent must:
+
 - Inspect existing code in the relevant workspace before editing, rather than assuming a pattern that hasn't actually been established yet.
 - Reuse existing patterns (the shared Gemini-client wrapper, the shared `zod` schemas, the existing scan-capture component) rather than re-implementing something similar from scratch.
 - Prefer small, reviewable changes scoped to the current task over large multi-file rewrites.
@@ -157,6 +165,7 @@ The AI agent must:
 ## 16. Definition of Done
 
 A task in `TASKS.md` is complete only when:
+
 - The implementation satisfies every subtask and every "Done when" criterion listed for it.
 - Relevant tests (Section 11) pass.
 - `npm run typecheck --workspaces` passes.

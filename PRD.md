@@ -6,15 +6,16 @@
 
 **One-line description:** A merchant self-audit tool that verifies a physical UPI QR sticker hasn't been swapped, cloned, or relocated — backed by an AI verification pipeline and a public, tamper-evident blockchain record.
 
-**Executive summary:** UPI apps verify *who receives the money* once a QR is scanned. They cannot verify that the *physical sticker* in front of a customer is the one the merchant actually put there. A scammer can paste a technically valid, fully-functional fake QR directly over a real one, or peel off a genuine QR and stick it somewhere else — and every existing UPI safeguard (signed QR, soundbox, bank-side fraud checks) passes the transaction anyway. QRaksha closes this gap by having the **merchant**, not the customer, periodically re-scan their own sticker. An AI agent pipeline compares the current scan against a registered credential (QR identity, reference visual signature, and bound location) and returns a trust verdict. The credential's hash is anchored to a public blockchain testnet so the verdict process is independently auditable, not just "trust our database."
+**Executive summary:** UPI apps verify _who receives the money_ once a QR is scanned. They cannot verify that the _physical sticker_ in front of a customer is the one the merchant actually put there. A scammer can paste a technically valid, fully-functional fake QR directly over a real one, or peel off a genuine QR and stick it somewhere else — and every existing UPI safeguard (signed QR, soundbox, bank-side fraud checks) passes the transaction anyway. QRaksha closes this gap by having the **merchant**, not the customer, periodically re-scan their own sticker. An AI agent pipeline compares the current scan against a registered credential (QR identity, reference visual signature, and bound location) and returns a trust verdict. The credential's hash is anchored to a public blockchain testnet so the verdict process is independently auditable, not just "trust our database."
 
-**Problem statement:** QR-swap and QR-relocation fraud against physical UPI stickers is real, current, and typically undetected for days because nothing in the existing UPI stack checks whether *this exact sticker, in this exact place* is the one the merchant registered.
+**Problem statement:** QR-swap and QR-relocation fraud against physical UPI stickers is real, current, and typically undetected for days because nothing in the existing UPI stack checks whether _this exact sticker, in this exact place_ is the one the merchant registered.
 
 **Why the problem matters:** Physical QR codes are now the default payment surface for a huge share of small Indian merchants (canteens, street vendors, parking stands, petrol pumps). A single swapped sticker silently redirects every payment made against it until someone notices — often the merchant, days later, when expected money never arrived. The fraud is cheap to execute (print a sticker) and expensive to detect (nobody is checking).
 
 **Target users (primary):** Small and medium physical-retail merchants who accept UPI via a printed/laminated QR sticker — canteens, kirana stores, street vendors, parking operators, campus vendors.
 
 **Secondary users:**
+
 - **Customers** — optionally scan a merchant's QR with QRaksha before paying, for unfamiliar vendors or high-value payments.
 - **Platform admins/operators** — manage the merchant registry, review disputes, monitor the demo/pilot cohort.
 - **Market association / campus coordinators** (Stage 2, post-MVP) — onboard a batch of merchants under one trusted cohort.
@@ -22,6 +23,7 @@
 **Core value proposition:** "NPCI verifies identity. QRaksha verifies that today's sticker is the one you put there yesterday — and gives anyone a public record to check that claim against."
 
 **Product principles:**
+
 1. **Merchant-side first.** The primary flow is merchant self-audit, not customer-side scanning, because customers overwhelmingly scan from inside GPay/PhonePe, a flow no third-party app can see (Android sandboxing).
 2. **Trust is earned, never granted.** No credential starts at full 🟢 VERIFIED. Trust ramps up over time and verified activity.
 3. **Never overclaim the blockchain.** It provides public auditability of QRaksha's own records, not decentralized trust.
@@ -29,6 +31,7 @@
 5. **Fast at scan time, slow at registration time.** Every expensive check (OTP, GST/Udyam lookup, penny-drop) happens once at registration. A live audit only does a cached lookup plus a lightweight embedding comparison.
 
 **Key assumptions** (see also per-section "Assumptions / Decisions" call-outs):
+
 - The MVP targets a single pilot cohort (one campus or one market association), not a national rollout.
 - GST/Udyam government verification and bank penny-drop are **simulated/mocked** for the MVP build and demo (see Section 4, "Built vs. Designed"); production would integrate real GSTN/NPCI/bank APIs.
 - The ₹1 proof-of-possession micro-transaction is simulated in the MVP; the flow and data model are built as if it were real so it can be swapped for a live payment integration later.
@@ -37,6 +40,7 @@
 ## 2. Goals
 
 ### MVP Goals
+
 - A merchant can register a credential (identity tier + reference photo + location + one or more QR codes) in under 5 minutes.
 - A merchant can run a self-audit in under 60 seconds and receive a 🟢/🟡/🔴 verdict.
 - The system correctly flags a **QR replacement** (different QR payload than any registered QR under that credential) as 🔴 WARNING.
@@ -48,6 +52,7 @@
 - A demo registry of 5–10 fictional merchants exists for live demonstration.
 
 ### Non-Goals (MVP)
+
 - No real integration with GST/Udyam government verification APIs, real bank penny-drop, or a real OTP-to-government-record flow — these are simulated with a clearly documented mock boundary.
 - No Android "default QR handler" registration or notification-listener post-payment alert (Android OS-level integration) — documented as designed-but-not-built.
 - No actual UPI payment processing of any kind. QRaksha never touches the payment itself.
@@ -60,6 +65,7 @@
 ## 3. User Personas
 
 ### Persona 1 — Registered Merchant (primary)
+
 - **Role:** Owner/operator of a small physical storefront or stall (canteen, kirana store, vendor cart).
 - **Goals:** Confirm their payment sticker hasn't been tampered with; protect daily revenue; build a visible trust signal for customers.
 - **Pain points:** No existing tool checks the physical sticker; fraud is discovered only when expected money doesn't arrive; low tolerance for anything that slows down the payment counter.
@@ -69,6 +75,7 @@
 - **Important permissions:** Can register/edit their own credential and QR set, run self-audits, view their own trust tier and history, file a dispute against a credential impersonating them.
 
 ### Persona 2 — Unregistered / GST-less Merchant
+
 - **Role:** Same as Persona 1, but without formal GST/Udyam registration (very common for small vendors).
 - **Goals:** Same as Persona 1, without needing paperwork they don't have.
 - **Pain points:** Formal KYC-style registration flows assume documents they may not hold.
@@ -78,6 +85,7 @@
 - **Important permissions:** Same as Persona 1; credential is flagged internally as "baseline tier" (affects trust-ramp speed, not user-visible shaming).
 
 ### Persona 3 — Customer (secondary, optional)
+
 - **Role:** Person about to pay at a shop, vendor, or stall.
 - **Goals:** Confirm a QR is legitimate before paying, especially at an unfamiliar shop or for a large amount.
 - **Pain points:** Doesn't want to install a separate app just to check; will not do this for every purchase.
@@ -87,6 +95,7 @@
 - **Important permissions:** Read-only check against the public credential registry; no registration required to use this flow.
 
 ### Persona 4 — Platform Admin / Operator
+
 - **Role:** QRaksha team member operating the pilot.
 - **Goals:** Seed and manage the demo merchant registry; review and resolve disputes; monitor overall fraud-flag rates during the pilot.
 - **Pain points:** Needs visibility into flagged credentials without exposing merchants' private identity data.
@@ -99,6 +108,7 @@
 ### MVP
 
 **Feature: Merchant Registration (Tiered Identity)**
+
 - Purpose: Create a Merchant Credential without gatekeeping merchants who lack formal registration.
 - User value: Low-friction onboarding regardless of formal-business status.
 - User story: As a merchant, I want to register using whatever identity proof I have, so that I get protection without needing paperwork I don't have.
@@ -109,6 +119,7 @@
 - Classification: MVP.
 
 **Feature: Reference Capture & Location Binding**
+
 - Purpose: Establish the visual and geographic baseline a future self-audit is compared against.
 - User value: The system knows what "correct" looks like for this merchant.
 - User story: As a merchant, I want to photograph my QR sticker once, so future scans can be checked against it.
@@ -119,6 +130,7 @@
 - Classification: MVP.
 
 **Feature: Multi-QR Support per Credential**
+
 - Purpose: Reflect real merchant behavior — a billing counter, a takeaway window, and app-specific stickers may each carry a distinct QR under the same business.
 - User value: Merchants don't need a separate account per physical sticker.
 - User story: As a merchant with three counters, I want each counter's QR under one account, so I audit them together.
@@ -129,6 +141,7 @@
 - Classification: MVP.
 
 **Feature: Proof-of-Possession Micro-Transaction**
+
 - Purpose: Confirm the registering party actually controls the VPA being registered.
 - User value: Raises the cost of registering someone else's VPA fraudulently.
 - User story: As the system, I want to confirm VPA control once, so a credential can't be created against a VPA the registrant doesn't own.
@@ -139,6 +152,7 @@
 - Classification: MVP (mocked).
 
 **Feature: Agent Pipeline (Self-Audit Verdict Engine)**
+
 - Purpose: Turn a live scan into a trust verdict.
 - User value: This is the core product — the reason the app exists.
 - User story: As a merchant, I want to scan my sticker and immediately know if something's wrong.
@@ -149,6 +163,7 @@
 - Classification: MVP.
 
 **Feature: Trust Tiers & Trust Ramp**
+
 - Purpose: Prevent a freshly (or fraudulently) registered credential from immediately looking as trustworthy as a long-standing one.
 - User value/system value: Sybil resistance; makes registration-fraud economically unattractive.
 - User story: As the system, I want new credentials to earn trust over time, so a scammer can't register a fake credential and get instant legitimacy.
@@ -158,6 +173,7 @@
 - Classification: MVP.
 
 **Feature: Blockchain Credential Anchoring**
+
 - Purpose: Public, tamper-evident proof that a credential record hasn't been silently altered.
 - User value: Anyone — including a skeptical customer or judge — can verify the claim without trusting QRaksha's database.
 - User story: As a customer, I want to independently check that a merchant's credential record hasn't been quietly changed.
@@ -168,6 +184,7 @@
 - Classification: MVP.
 
 **Feature: Customer Optional Check**
+
 - Purpose: Give customers an extra check for unfamiliar or high-value payments, without requiring merchant-side data.
 - User value: Peace of mind on demand.
 - User story: As a customer, I want to scan a QR before I pay at an unfamiliar shop.
@@ -178,6 +195,7 @@
 - Classification: MVP.
 
 **Feature: Dispute Channel**
+
 - Purpose: Let a real merchant contest a credential fraudulently registered under their name/location.
 - User value: Recourse against registration-time fraud.
 - User story: As a merchant, I want to flag a fake credential using my business identity, so it gets investigated and taken down.
@@ -188,12 +206,14 @@
 - Classification: MVP.
 
 **Feature: Demo Merchant Registry Seeding**
+
 - Purpose: Provide a realistic, ready-to-demo dataset.
 - Functional requirements: Seed 5–10 fictional merchants (e.g., Sharma Canteen, ABC Petrol Pump, Fresh Bites, Campus Cafe, City Parking) each with a registered QR, reference embedding, and bound location, spanning different trust tiers.
 - Acceptance criteria: Demo script can show a 🟢 VERIFIED merchant, a 🟡 fresh registration, a 🔴 replacement, and a 🔴 relocation without any live registration steps.
 - Classification: MVP.
 
 ### Post-MVP
+
 - Android default-QR-handler registration (lets QRaksha intercept scans made outside a payment app).
 - Notification-listener post-payment alert (best-effort post-payment fraud alert when QRaksha cannot see the pre-payment scan).
 - Paid "Verified" trust badge as a merchant marketing product.
@@ -201,6 +221,7 @@
 - Per-verification licensing API surface for a market association or PSP.
 
 ### Future / Experimental
+
 - Licensable verification SDK embedded directly into a PSP's (GPay/PhonePe) own scan flow.
 - Real GST/Udyam government API + OTP integration.
 - Real bank penny-drop API integration.
@@ -210,6 +231,7 @@
 ## 5. Core User Flows
 
 ### First-time merchant registration flow
+
 ```mermaid
 flowchart TD
     A[Landing Page] --> B{Has GST/Udyam?}
@@ -227,6 +249,7 @@ flowchart TD
 ```
 
 ### Merchant self-audit flow (primary, recurring)
+
 ```mermaid
 flowchart TD
     A[Open QRaksha app] --> B[Point camera at own sticker]
@@ -242,6 +265,7 @@ flowchart TD
 ```
 
 ### Customer optional check flow
+
 ```mermaid
 flowchart TD
     A[Customer opens QRaksha] --> B[Scan merchant QR]
@@ -256,6 +280,7 @@ flowchart TD
 ```
 
 ### Dispute flow
+
 ```mermaid
 flowchart TD
     A[Merchant discovers impersonating credential] --> B[Open dispute against credential ID]
@@ -268,17 +293,21 @@ flowchart TD
 ```
 
 ### Returning-user / settings flow
+
 Merchant logs in → dashboard shows current tier per QR, last audit timestamp, on-chain anchor link, and a "Run self-audit now" call-to-action. Settings: manage registered QRs, view identity-tier status, view dispute history, log out.
 
 ### Failure/error flow (shared across audit and check)
+
 Any agent call failure → verdict engine attempts degraded mode (Identity + Context only) → if that also fails, surfaces "Unable to verify right now — try again" with no false verdict ever shown; failures are logged with a correlation ID, never silently defaulted to 🟢.
 
 ### Admin flow
+
 Admin logs into internal console → sees flagged/disputed credentials queue → opens a credential → views metadata, audit history, on-chain anchor, and any dispute evidence (not raw identity documents) → resolves or escalates.
 
 ## 6. UI/UX Specification
 
 ### Design Language
+
 - **Overall visual style:** Utilitarian trust interface — clear, high-contrast, camera-first. The product's entire value is a fast, unambiguous verdict, so the UI never buries it.
 - **Brand personality:** Calm authority — a security tool, not a consumer social app. No playful mascots; confident, plain language.
 - **Density:** Low-to-medium density on merchant/customer screens (large verdict states, large tap targets for low-tech-literacy users); medium-to-high density on the admin console.
@@ -293,23 +322,25 @@ Admin logs into internal console → sees flagged/disputed credentials queue →
 - **Animation philosophy:** Minimal; the verdict reveal uses one short (300ms) fade/scale-in to draw attention without feeling gamified. Respect reduced-motion.
 
 ### Color System
-| Token | Light | Dark | Usage |
-|---|---|---|---|
-| Primary | `#1B4D8C` (deep trust blue) | `#5B9BD5` | Primary actions, links |
-| Secondary | `#0F172A` | `#E2E8F0` | Headers, secondary emphasis |
-| Background | `#F8FAFC` | `#0B1220` | App background |
-| Surface | `#FFFFFF` | `#111827` | Cards |
-| Text | `#0F172A` | `#F1F5F9` | Body text |
-| Muted text | `#64748B` | `#94A3B8` | Secondary text, timestamps |
-| Border | `#E2E8F0` | `#1F2937` | Card/input borders |
-| Success (VERIFIED) | `#16A34A` | `#22C55E` | Green tier |
-| Warning (RECENTLY REGISTERED) | `#CA8A04` | `#EAB308` | Yellow tier |
-| Error (WARNING/fraud) | `#DC2626` | `#EF4444` | Red tier |
-| Info | `#2563EB` | `#60A5FA` | Neutral notices |
+
+| Token                         | Light                       | Dark      | Usage                       |
+| ----------------------------- | --------------------------- | --------- | --------------------------- |
+| Primary                       | `#1B4D8C` (deep trust blue) | `#5B9BD5` | Primary actions, links      |
+| Secondary                     | `#0F172A`                   | `#E2E8F0` | Headers, secondary emphasis |
+| Background                    | `#F8FAFC`                   | `#0B1220` | App background              |
+| Surface                       | `#FFFFFF`                   | `#111827` | Cards                       |
+| Text                          | `#0F172A`                   | `#F1F5F9` | Body text                   |
+| Muted text                    | `#64748B`                   | `#94A3B8` | Secondary text, timestamps  |
+| Border                        | `#E2E8F0`                   | `#1F2937` | Card/input borders          |
+| Success (VERIFIED)            | `#16A34A`                   | `#22C55E` | Green tier                  |
+| Warning (RECENTLY REGISTERED) | `#CA8A04`                   | `#EAB308` | Yellow tier                 |
+| Error (WARNING/fraud)         | `#DC2626`                   | `#EF4444` | Red tier                    |
+| Info                          | `#2563EB`                   | `#60A5FA` | Neutral notices             |
 
 Dark mode follows system preference (`prefers-color-scheme`); verdict colors keep the same hue family in both modes for consistent recognition.
 
 ### Responsive Design
+
 - **Mobile (default, primary target):** Single column, camera view fills most of the viewport during scan, bottom tab navigation, breakpoint < 640px.
 - **Tablet:** 640–1024px — same layouts, wider margins, no structural change.
 - **Desktop:** > 1024px — merchant/customer flows remain centered single-column (max-width 480px) since this is fundamentally a phone-camera product; the **admin console** gets a full desktop layout with sidebar navigation and data tables at this breakpoint.
@@ -318,6 +349,7 @@ Dark mode follows system preference (`prefers-color-scheme`); verdict colors kee
 - **Component stacking:** Registration wizard steps stack vertically; the verdict card never shares a screen with other primary content.
 
 ### UX States (per feature)
+
 - **Loading:** Skeleton card during verdict computation with a short status label ("Checking QR identity…", "Comparing to registered photo…") so the multi-agent pipeline doesn't feel like a frozen screen.
 - **Empty:** New merchant dashboard with no QR yet → prominent "Register your first QR" call-to-action, not a blank table.
 - **Success:** 🟢 VERIFIED verdict card with green band, merchant name, and "Last checked: just now."
@@ -327,6 +359,7 @@ Dark mode follows system preference (`prefers-color-scheme`); verdict colors kee
 - **Offline/network failure:** Self-audit requires connectivity (agents call external APIs); an offline banner blocks the scan action with a clear "You're offline — self-audit needs an internet connection" message rather than letting the camera open and then failing.
 
 ### Accessibility
+
 - All interactive elements reachable and operable via keyboard (admin console) or standard mobile screen-reader gestures (TalkBack/VoiceOver on the PWA).
 - Verdict tier is never conveyed by color alone — always paired with a text label ("VERIFIED", "WARNING") and an icon shape.
 - Minimum 4.5:1 contrast ratio for all body text against its background in both color modes.
@@ -337,11 +370,13 @@ Dark mode follows system preference (`prefers-color-scheme`); verdict colors kee
 ## 7. Information Architecture
 
 **Public/unauthenticated routes:**
+
 - `/` — landing/marketing
 - `/check` — customer optional scan-and-check flow (no login required)
 - `/verify/:credentialId` — public read-only credential summary + block-explorer link (this is what "public auditability" resolves to for an outside visitor)
 
 **Merchant routes (authenticated):**
+
 - `/register` — registration wizard
 - `/dashboard` — merchant home: tier per QR, last audit, quick "Run Self-Audit"
 - `/audit/run` — camera scan flow for self-audit
@@ -351,6 +386,7 @@ Dark mode follows system preference (`prefers-color-scheme`); verdict colors kee
 - `/settings` — account/profile settings
 
 **Admin routes (role-gated):**
+
 - `/admin/disputes` — dispute queue
 - `/admin/credentials/:id` — credential detail (metadata + audit history + on-chain anchor; identity documents remain in the separately access-controlled store and are not rendered here in the MVP admin view)
 - `/admin/registry` — full credential list (search/filter)
@@ -362,6 +398,7 @@ Dark mode follows system preference (`prefers-color-scheme`); verdict colors kee
 ## 8. MVP Acceptance Criteria
 
 The MVP is complete when all of the following are true:
+
 1. A merchant can complete registration (either identity path), reference capture, location binding, and mocked proof-of-possession end-to-end without developer intervention.
 2. A self-audit against a genuine, unaltered sticker returns 🟡 (for a fresh credential) or 🟢 (once trust-ramp criteria are met) within 3 seconds.
 3. A self-audit against a swapped QR (different payload) returns 🔴 WARNING with reason `UNKNOWN_QR` or `MISBINDING`.
