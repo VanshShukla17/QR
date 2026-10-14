@@ -34,7 +34,7 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 - [x] Initialize npm workspaces root `package.json` with `apps/web`, `apps/api`, `packages/shared`
 - [x] Scaffold `apps/web` with Next.js (TypeScript template)
 - [x] Scaffold `apps/api` with Express (TypeScript)
-- [ ] Scaffold `packages/shared` with a `tsconfig.json` and an initial `zod` schema file
+- [x] Scaffold `packages/shared` with a `tsconfig.json` and an initial `zod` schema file
 - [ ] Configure TypeScript project references across the three workspaces
 - [ ] Add `.env.example` files to `apps/web` and `apps/api` listing every variable named in `ARCHITECTURE.md` Section 13 (no real values)
 - [ ] Configure Prettier at the repo root, shared across workspaces
