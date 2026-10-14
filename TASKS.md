@@ -71,10 +71,10 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 
 ### Task 2 — Merchant identity registration (frontend)
 
-- [ ] Build the registration wizard step 1 UI (`/register`) — path selection (GST/Udyam vs. penny-drop)
-- [ ] Build the OTP-confirmation sub-step UI (mocked OTP entry)
-- [ ] Build the penny-drop sub-step UI (VPA entry + mocked confirmation)
-- [ ] Wire both to the Task 1 API with loading/error/success states per `PRD.md` Section 6
+- [x] Build the registration wizard step 1 UI (`/register`) — path selection (GST/Udyam vs. penny-drop)
+- [x] Build the OTP-confirmation sub-step UI (mocked OTP entry)
+- [x] Build the penny-drop sub-step UI (VPA entry + mocked confirmation)
+- [x] Wire both to the Task 1 API with loading/error/success states per `PRD.md` Section 6
 
 **Depends on:** Task 1.
 
