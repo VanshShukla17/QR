@@ -36,7 +36,7 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 - [x] Scaffold `apps/api` with Express (TypeScript)
 - [x] Scaffold `packages/shared` with a `tsconfig.json` and an initial `zod` schema file
 - [x] Configure TypeScript project references across the three workspaces
-- [ ] Add `.env.example` files to `apps/web` and `apps/api` listing every variable named in `ARCHITECTURE.md` Section 13 (no real values)
+- [x] Add `.env.example` files to `apps/web` and `apps/api` listing every variable named in `ARCHITECTURE.md` Section 13 (no real values)
 - [ ] Configure Prettier at the repo root, shared across workspaces
 - [ ] Configure ESLint at the repo root with a TypeScript config, extended per-workspace as needed
 - [ ] Configure Vitest for unit tests in `apps/api` and `packages/shared`
