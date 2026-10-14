@@ -40,7 +40,7 @@ Do not skip ahead. Do not batch multiple unrelated tasks into one session.
 - [x] Add `.env.example` files to `apps/web` and `apps/api` listing every variable named in `ARCHITECTURE.md` Section 13 (no real values)
 - [x] Configure Prettier at the repo root, shared across workspaces
 - [x] Configure ESLint at the repo root with a TypeScript config, extended per-workspace as needed
-- [ ] Configure Vitest for unit tests in `apps/api` and `packages/shared`
+- [x] Configure Vitest for unit tests in `apps/api` and `packages/shared`
 - [ ] Configure Playwright for `apps/web` E2E tests
 - [ ] Add a pre-commit git hook (via `husky` + `lint-staged`) running lint + format on staged files
 - [ ] Establish base folder structure inside `apps/api` (`/routes`, `/agents`, `/services`, `/db`, `/middleware`)
