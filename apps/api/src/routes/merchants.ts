@@ -1,118 +1,107 @@
-import { Router, type Request, type Response } from "express";
-
+import { Router, Request, Response, NextFunction } from "express";
 import {
-  RegisterIdentityRequestSchema,
-  RegisterReferenceRequestSchema,
+  RegisterIdentitySchema,
+  RegisterReferenceSchema,
+  ProofOfPossessionSchema,
 } from "@qraksha/shared";
-import {
-  ConflictError as IdentityConflictError,
-  registerMerchantIdentity,
-} from "../services/identity.service.js";
-import {
-  ConflictError as ReferenceConflictError,
-  NotFoundError,
-  registerReference,
-} from "../services/reference.service.js";
 
-export const merchantsRouter = Router();
+import { validateBody } from "../middleware/validate.middleware.js";
+import { otpRateLimiter } from "../middleware/rate-limit.middleware.js";
+import { ValidationError } from "../middleware/error.middleware.js";
 
-merchantsRouter.post(
+import { merchantService } from "../services/merchant.service.js";
+
+export const merchantRouter = Router();
+
+/**
+ * POST /api/v1/merchants/register/identity
+ * Public endpoint to start merchant registration via GST/Udyam+OTP or VPA penny-drop.
+ * Rate-limited to max 5 OTP attempts per phone number per 15 minutes per ARCHITECTURE.md Section 8.
+ * Per ARCHITECTURE.md Section 6 and PRD.md Section 4 (Feature: Merchant Registration).
+ */
+merchantRouter.post(
   "/register/identity",
-  async (req: Request, res: Response): Promise<void> => {
-    const parseResult = RegisterIdentityRequestSchema.safeParse(req.body);
-
-    if (!parseResult.success) {
-      res.status(400).json({
-        error: {
-          code: "VALIDATION_ERROR",
-          details: parseResult.error.errors.map((err) => ({
-            field: err.path.join("."),
-            message: err.message,
-          })),
-        },
-      });
-      return;
-    }
-
+  otpRateLimiter,
+  validateBody(RegisterIdentitySchema),
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const result = await registerMerchantIdentity(parseResult.data);
+      const result = await merchantService.registerIdentity(req.body);
       res.status(201).json({
         data: result,
       });
     } catch (err) {
-      if (err instanceof IdentityConflictError) {
-        res.status(409).json({
-          error: {
-            code: "CONFLICT",
-            message: err.message,
-            disputeUrl: err.disputeUrl,
-          },
-        });
-        return;
-      }
-
-      res.status(500).json({
-        error: {
-          code: "INTERNAL_ERROR",
-          message: "Failed to register merchant identity",
-        },
-      });
+      next(err);
     }
   }
 );
 
-merchantsRouter.post(
+/**
+ * POST /api/v1/merchants/register/reference
+ * Uploads reference photo & GPS, extracts embedding synchronously,
+ * deletes photo immediately, binds to geocoded KYC address,
+ * and creates credential + registered_qr + reference_embedding.
+ * Per ARCHITECTURE.md Section 6 and PRD.md Section 4 (Feature: Reference Capture & Location Binding).
+ */
+merchantRouter.post(
   "/register/reference",
-  async (req: Request, res: Response): Promise<void> => {
-    const parseResult = RegisterReferenceRequestSchema.safeParse(req.body);
-
-    if (!parseResult.success) {
-      res.status(400).json({
-        error: {
-          code: "VALIDATION_ERROR",
-          details: parseResult.error.errors.map((err) => ({
-            field: err.path.join("."),
-            message: err.message,
-          })),
-        },
-      });
-      return;
-    }
-
+  validateBody(RegisterReferenceSchema),
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const result = await registerReference(parseResult.data);
+      const merchantId = req.user?.id || req.body.merchantId;
+      if (!merchantId) {
+        throw new ValidationError("merchantId is required for reference registration");
+      }
+
+      const result = await merchantService.registerReference(merchantId, req.body);
       res.status(201).json({
         data: result,
       });
     } catch (err) {
-      if (err instanceof ReferenceConflictError) {
-        res.status(409).json({
-          error: {
-            code: "CONFLICT",
-            message: err.message,
-            disputeUrl: err.disputeUrl,
-          },
-        });
-        return;
-      }
+      next(err);
+    }
+  }
+);
 
-      if (err instanceof NotFoundError) {
-        res.status(404).json({
-          error: {
-            code: "NOT_FOUND",
-            message: err.message,
-          },
-        });
-        return;
-      }
-
-      res.status(500).json({
-        error: {
-          code: "INTERNAL_ERROR",
-          message:
-            err instanceof Error ? err.message : "Failed to register reference capture",
-        },
+/**
+ * POST /api/v1/merchants/register/proof-of-possession
+ * Confirms ₹1 proof-of-possession micro-transaction.
+ * Transitions credential status from pending_activation to recently_registered.
+ * Per ARCHITECTURE.md Section 6 and PRD.md Section 4 (Feature: Proof-of-Possession Micro-Transaction).
+ */
+merchantRouter.post(
+  "/register/proof-of-possession",
+  validateBody(ProofOfPossessionSchema),
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const result = await merchantService.confirmProofOfPossession(
+        req.body.credentialId,
+        req.body.simulationPassed
+      );
+      res.status(200).json({
+        data: result,
       });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+/**
+ * GET /api/v1/merchants/:id/stats
+ * Returns canonical merchant stats from comparison.get_merchant_stats SQL function.
+ * Single source of truth for active QRs and clean audits.
+ */
+merchantRouter.get(
+  "/:id/stats",
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const merchantId = String(req.params.id);
+      const stats = await merchantService.getMerchantStats(merchantId);
+      res.status(200).json({
+        data: stats,
+      });
+    } catch (err) {
+      next(err);
     }
   }
 );

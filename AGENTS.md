@@ -1,5 +1,7 @@
 # AGENTS.md — QRaksha
 
+Visual decisions live in DESIGN.md. Do not override them here.
+
 ## 1. Mission
 
 QRaksha is a merchant self-audit tool that detects when a physical UPI QR sticker has been swapped, cloned, or relocated, using a five-agent AI verification pipeline and a public blockchain anchor for tamper-evident record-keeping. As an AI coding agent on this repository, your responsibility is to implement exactly the current task from `TASKS.md`, in a way that matches `PRD.md`'s product requirements and `ARCHITECTURE.md`'s technical decisions, without expanding scope or re-deciding settled architecture on your own.
@@ -12,6 +14,7 @@ Before changing anything, read, in order:
 AGENTS.md
 PRD.md
 ARCHITECTURE.md
+DESIGN.md
 TASKS.md
 ```
 
@@ -63,6 +66,7 @@ If a workspace's `package.json` doesn't yet define one of these scripts, add it 
 The agent must:
 
 - Follow `ARCHITECTURE.md` as the source of truth for stack, data model, and API shape.
+- Follow `DESIGN.md` as the single source of truth for all visual and UI decisions, color tokens, typography, component layout, and landing page structure.
 - Avoid unnecessary dependencies (Section 13).
 - Avoid premature abstraction and premature optimization (see `ARCHITECTURE.md` Section 11, "what NOT to optimize prematurely").
 - Keep the frontend/backend/data boundary intact: `apps/web` never calls Gemini or the blockchain directly, and never receives the Supabase service-role key or the chain signing key.
@@ -119,7 +123,7 @@ The agent must:
 
 - **Unit tests** are required for: every agent module, the trust-ramp scoring function, the AI data-boundary guard, and any pure business-logic function in `apps/api/services`.
 - **Integration/API tests** are required for every route listed in `ARCHITECTURE.md` Section 6, covering at minimum its documented success case and its most likely error case.
-- **Component tests** are required for the verdict-result card (all three tiers) and for every UX state enumerated in `PRD.md` Section 6.
+- **Component tests** are required for the verdict-result card (all three tiers, verifying conformance to `DESIGN.md` Section 5 component specs and semantic verdict colors) and for every UX state enumerated in `PRD.md` Section 6.
 - **E2E tests** are required for the two flagship demo scenarios (QR replacement, QR relocation) before Phase 7 (Production Readiness) begins.
 - No task in `TASKS.md` may be marked complete while its required tests are failing, skipped, or commented out.
 
@@ -174,4 +178,4 @@ A task in `TASKS.md` is complete only when:
 - No known regression exists against any previously completed task.
 - `PRD.md`/`ARCHITECTURE.md` are updated if the implementation changed a documented decision (Section 12).
 - The task's checkbox(es) in `TASKS.md` are checked.
-- The implementation matches `PRD.md`'s functional requirements and `ARCHITECTURE.md`'s technical decisions for that feature.
+- The implementation matches `PRD.md`'s functional requirements, `ARCHITECTURE.md`'s technical decisions, and `DESIGN.md`'s visual and UI specifications for that feature.

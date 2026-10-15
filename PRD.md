@@ -1,5 +1,7 @@
 # PRD.md — QRaksha
 
+Visual decisions live in DESIGN.md. Do not override them here.
+
 ## 1. Product Overview
 
 **Product name:** QRaksha
@@ -306,54 +308,46 @@ Admin logs into internal console → sees flagged/disputed credentials queue →
 
 ## 6. UI/UX Specification
 
+Visual decisions live in `DESIGN.md`. Do not override them here.
+
 ### Design Language
 
-- **Overall visual style:** Utilitarian trust interface — clear, high-contrast, camera-first. The product's entire value is a fast, unambiguous verdict, so the UI never buries it.
-- **Brand personality:** Calm authority — a security tool, not a consumer social app. No playful mascots; confident, plain language.
+- **Overall visual style:** Utilitarian, institutional, precise security-grade interface (see `DESIGN.md`, section 1). Clear, high-contrast, camera-first. The product's entire value is a fast, unambiguous verdict, so the UI never buries it.
+- **Brand personality:** Calm authority — "If a bank and a hardware security lab designed a landing page" (see `DESIGN.md`, section 1). Restraint over decoration. No playful mascots, neon cyberpunk, matrix text, or stock shield/padlock icons; confident, plain language.
 - **Density:** Low-to-medium density on merchant/customer screens (large verdict states, large tap targets for low-tech-literacy users); medium-to-high density on the admin console.
-- **Border radius:** Medium rounding (8–12px) on cards and buttons — approachable but not toy-like.
-- **Shadows:** Subtle, single soft shadow on elevated cards only (verdict card, credential card); flat elsewhere.
-- **Cards:** Verdict result is always a full-width card with a dominant color band (green/yellow/red) at the top.
-- **Buttons:** One primary action per screen ("Run Self-Audit", "Scan QR"); primary buttons full-width on mobile.
+- **Border radius:** 4px radius across cards, buttons, and inputs (near-square, not pill; see `DESIGN.md`, section 4 and section 5).
+- **Shadows:** None (see `DESIGN.md`, section 4 and section 10). 1px borders define edges; no drop shadows or card lifts.
+- **Cards:** Defined in `DESIGN.md`, section 5. Verdict result card uses a 4px border radius, a 4px solid verdict color on the left edge (never a top band), mono verdict label, one-line reason, a 3-row evidence breakdown (Identity / Vision / Context) with pass/flag chips, and a top-right shield icon in the semantic verdict color.
+- **Buttons:** Defined in `DESIGN.md`, section 5. Primary button uses brand orange fill, ink text, 4px radius, 40px height. Secondary button uses transparent fill with 1px border.
 - **Forms:** Single-column, one field group per step (multi-step registration wizard rather than one long form).
-- **Navigation:** Bottom tab bar on mobile (Home / Scan / History / Settings); left sidebar on desktop admin console only.
-- **Typography hierarchy:** System sans-serif stack; verdict tier label is the largest text on any screen.
-- **Iconography:** A colored circular badge (🟢/🟡/🔴 equivalents rendered as accessible icons, not emoji, in production UI) is the single most important visual element on the verdict screen.
-- **Animation philosophy:** Minimal; the verdict reveal uses one short (300ms) fade/scale-in to draw attention without feeling gamified. Respect reduced-motion.
+- **Navigation:** Bottom tab bar on mobile (Home / Scan / History / Settings); left sidebar on desktop admin console only. Sticky nav on landing page per `DESIGN.md`, section 5.
+- **Typography hierarchy:** Defined in `DESIGN.md`, section 3. Clean grotesk (Inter Tight, Geist, or General Sans) for display and body, paired with monospace (JetBrains Mono or Geist Mono) for labels, eyebrows, step numbers, hashes, and verdict tags.
+- **Iconography:** Monoline icons (1.5px stroke, square caps, brand color; see `DESIGN.md`, section 6). Verdict status is conveyed by accessible icons paired with text labels, never color alone.
+- **Animation philosophy:** Defined in `DESIGN.md`, section 7. Motion uses standard easing `cubic-bezier(0.22, 1, 0.36, 1)`; scan line and verdict shield resolve is the one signature animation. Respect `prefers-reduced-motion`.
 
 ### Color System
 
-| Token                         | Light                       | Dark      | Usage                       |
-| ----------------------------- | --------------------------- | --------- | --------------------------- |
-| Primary                       | `#1B4D8C` (deep trust blue) | `#5B9BD5` | Primary actions, links      |
-| Secondary                     | `#0F172A`                   | `#E2E8F0` | Headers, secondary emphasis |
-| Background                    | `#F8FAFC`                   | `#0B1220` | App background              |
-| Surface                       | `#FFFFFF`                   | `#111827` | Cards                       |
-| Text                          | `#0F172A`                   | `#F1F5F9` | Body text                   |
-| Muted text                    | `#64748B`                   | `#94A3B8` | Secondary text, timestamps  |
-| Border                        | `#E2E8F0`                   | `#1F2937` | Card/input borders          |
-| Success (VERIFIED)            | `#16A34A`                   | `#22C55E` | Green tier                  |
-| Warning (RECENTLY REGISTERED) | `#CA8A04`                   | `#EAB308` | Yellow tier                 |
-| Error (WARNING/fraud)         | `#DC2626`                   | `#EF4444` | Red tier                    |
-| Info                          | `#2563EB`                   | `#60A5FA` | Neutral notices             |
+All color tokens, surfaces, and values are defined in `DESIGN.md`, section 2 (Color System) and section 11 (CSS tokens).
 
-Dark mode follows system preference (`prefers-color-scheme`); verdict colors keep the same hue family in both modes for consistent recognition.
+- **Core Palette:** Warm near-black background (`--bg-ink`), peach light background (`--bg-peach`), and brand orange (`--brand`) accent. See `DESIGN.md`, section 2.
+- **Verdict Colors (Semantic Only):** `--ok` (VERIFIED), `--warn` (UNVERIFIED), and `--danger` (WARNING). Verdict colors appear strictly inside verdict UI, the three-tier explainer, and demo result states.
+- **Strict Rule:** Brand orange is never used for warning or danger states; verdict colors are semantic-only and never used decoratively (see `DESIGN.md`, section 2 and section 10).
 
 ### Responsive Design
 
-- **Mobile (default, primary target):** Single column, camera view fills most of the viewport during scan, bottom tab navigation, breakpoint < 640px.
+- **Mobile (default, primary target):** Single column, camera view fills most of the viewport during scan, bottom tab navigation, breakpoint < 640px. Breakpoints follow `DESIGN.md`, section 9 (640px, 1024px, 1280px).
 - **Tablet:** 640–1024px — same layouts, wider margins, no structural change.
 - **Desktop:** > 1024px — merchant/customer flows remain centered single-column (max-width 480px) since this is fundamentally a phone-camera product; the **admin console** gets a full desktop layout with sidebar navigation and data tables at this breakpoint.
 - **Navigation behavior:** Bottom tabs collapse into the sidebar only for the admin console; merchant/customer PWA always uses bottom tabs regardless of viewport width, to keep the camera-first experience consistent.
-- **Content width:** Merchant/customer content capped at 480px centered; admin tables use full available width with horizontal scroll on overflow.
+- **Content width:** Merchant/customer content capped at 480px centered; admin tables use full available width with horizontal scroll on overflow. Landing page max content width is 1200px (see `DESIGN.md`, section 4).
 - **Component stacking:** Registration wizard steps stack vertically; the verdict card never shares a screen with other primary content.
 
 ### UX States (per feature)
 
 - **Loading:** Skeleton card during verdict computation with a short status label ("Checking QR identity…", "Comparing to registered photo…") so the multi-agent pipeline doesn't feel like a frozen screen.
 - **Empty:** New merchant dashboard with no QR yet → prominent "Register your first QR" call-to-action, not a blank table.
-- **Success:** 🟢 VERIFIED verdict card with green band, merchant name, and "Last checked: just now."
-- **Error:** Distinguish network/service errors ("Couldn't reach verification service — retry") from verdict outcomes (🔴 WARNING is a successful check with a bad result, never styled as an app error).
+- **Success:** VERIFIED verdict card matching `DESIGN.md`, section 5 with 4px solid green left border, shield icon, merchant name, and "Last checked: just now."
+- **Error:** Distinguish network/service errors ("Couldn't reach verification service — retry") from verdict outcomes (WARNING is a successful check with a bad result, never styled as an app error).
 - **Disabled:** "Run Self-Audit" disabled with an explanatory tooltip if camera permission hasn't been granted yet.
 - **Permission denied:** Dedicated screen explaining exactly why camera/location access is required, with a retry-permission button — never a silent failure.
 - **Offline/network failure:** Self-audit requires connectivity (agents call external APIs); an offline banner blocks the scan action with a clear "You're offline — self-audit needs an internet connection" message rather than letting the camera open and then failing.
@@ -361,17 +355,27 @@ Dark mode follows system preference (`prefers-color-scheme`); verdict colors kee
 ### Accessibility
 
 - All interactive elements reachable and operable via keyboard (admin console) or standard mobile screen-reader gestures (TalkBack/VoiceOver on the PWA).
-- Verdict tier is never conveyed by color alone — always paired with a text label ("VERIFIED", "WARNING") and an icon shape.
-- Minimum 4.5:1 contrast ratio for all body text against its background in both color modes.
+- Verdict tier is never conveyed by color alone — always paired with a text label ("VERIFIED", "WARNING") and an icon shape (check / dash / alert; see `DESIGN.md`, section 9).
+- Contrast ratios strictly meet or exceed 4.5:1 for body text (see `DESIGN.md`, section 9).
 - Forms use proper `<label>` associations and inline error text tied via `aria-describedby`.
-- Reduced-motion preference disables the verdict fade/scale animation, replacing it with an instant state change.
-- Focus states use a visible 2px outline in the Primary color token.
+- Reduced-motion preference disables marquee, bar breathing, scan loop, and reveal animations, presenting static resolved states (see `DESIGN.md`, section 7).
+- Focus states use a visible 2px outline with 2px offset in the brand accent token (see `DESIGN.md`, section 9).
 
 ## 7. Information Architecture
 
 **Public/unauthenticated routes:**
 
-- `/` — landing/marketing
+- `/` — landing/marketing page. Layout follows the exact 10-section order and alternating dark/peach rhythm specified in `DESIGN.md`, section 4 and section 8:
+  1. Hero (dark): Centered layout with Three.js cube-built QR slab (`qraksha-hero-three.html`) with scan line and verdict shield over the vertical-bar gradient.
+  2. Trust strip: Monospace proof tags (`UPI-COMPATIBLE`, `NO NEW PAYMENT APP`, `TAMPER-EVIDENT`).
+  3. Problem (peach): 3-card grid highlighting replaced, cloned, and relocated QR attacks.
+  4. Solution (dark): Two-sided model explainer.
+  5. How it works (peach): Isometric agent pipeline diagram with four visible steps and credential hash chip.
+  6. Attacks covered (dark): 4-card grid (Replacement, Cloning, Relocation, Physical tampering).
+  7. Verdicts (peach): Three side-by-side verdict cards (VERIFIED, UNVERIFIED, WARNING) with semantic-only indicators.
+  8. Demo (dark): Interactive tabbed block showcasing Demo 1 (replacement) and Demo 2 (relocation).
+  9. Pitch band (dark): Large monospace quotation block ("A UPI app can tell you who receives the money. QRaksha tells you whether the QR in front of you was supposed to be there.").
+  10. CTA + footer (dark): Primary call-to-action, navigation links, and monospace legal text.
 - `/check` — customer optional scan-and-check flow (no login required)
 - `/verify/:credentialId` — public read-only credential summary + block-explorer link (this is what "public auditability" resolves to for an outside visitor)
 

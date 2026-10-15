@@ -1,34 +1,39 @@
 {
-  "name": "qraksha-monorepo",
+  "name": "qraksha",
   "version": "0.1.0",
   "private": true,
   "workspaces": [
-    "apps/web",
-    "apps/api",
-    "packages/shared"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
-    "test:e2e": "npm run test:e2e --workspace=apps/web --if-present",
-    "prepare": "husky"
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test --workspaces",
+    "test:e2e": "npm run test:e2e --workspace=apps/web",
+    "prepare": "node -e \"if (process.env.NODE_ENV !== 'production' && !process.env.CI && !process.env.RENDER) try { require('child_process').execSync('husky', { stdio: 'inherit' }) } catch {}\""
   },
   "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@types/node": "^22.13.0",
+    "eslint": "^9.20.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
-    "prettier": "^3.3.3",
-    "typescript-eslint": "^8.71.2"
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,mjs}": [
+    "*.{ts,tsx,js,jsx}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,md,yml,yaml}": [
+    "*.{json,md,css}": [
       "prettier --write"
     ]
   }

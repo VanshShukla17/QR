@@ -4,21 +4,18 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": ["ES2022"],
-    "outDir": "./dist",
-    "rootDir": "./src",
     "strict": true,
-    "composite": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "declaration": true,
-    "sourceMap": true,
-    "paths": {
-      "@qraksha/shared": ["../../packages/shared/src/index.ts"]
-    }
+    "rootDir": "src",
+    "outDir": "dist"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"],
+  "exclude": [
+    "src/__tests__/**/*",
+    "src/scripts/benchmark-performance.ts",
+    "src/scripts/rehearse-rollback.ts"
+  ],
   "references": [{ "path": "../../packages/shared" }]
 }

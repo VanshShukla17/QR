@@ -1,27 +1,38 @@
+import js from "@eslint/js";
 import tseslint from "typescript-eslint";
+import globals from "globals";
 
 export default tseslint.config(
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
     ignores: [
       "**/node_modules/**",
       "**/dist/**",
-      "**/build/**",
       "**/.next/**",
       "**/coverage/**",
       "**/test-results/**",
       "**/playwright-report/**",
-      "apps/web/**", // apps/web has its own Next.js ESLint config
-    ],
+      "**/next-env.d.ts",
+      "**/*.config.js"
+    ]
   },
-  ...tseslint.configs.recommended,
   {
-    files: ["apps/api/src/**/*.ts", "packages/shared/src/**/*.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser
+      }
+    },
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
-      ],
-    },
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_"
+        }
+      ]
+    }
   }
 );

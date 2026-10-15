@@ -1,0 +1,577 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Core brand & landing page constants (DESIGN.md Section 2) - strictly fixed, unaffected by theme */
+  --bg-ink: #120907;
+  --bg-ink-2: #1c0f0b;
+  --bg-peach: #ffede6;
+  --bg-peach-2: #ffddd0;
+  --brand: #ff4b1f;
+  --brand-soft: #ff8a66;
+  --brand-deep: #b7280a;
+  --text-on-dark: #f6e9e3;
+  --text-on-dark-muted: #b79e94;
+  --text-on-light: #1a0d09;
+  --text-on-light-muted: #5e4036;
+  --line-dark: rgba(255, 75, 31, 0.35);
+  --line-light: rgba(26, 13, 9, 0.15);
+  --ok: #2fbf71;
+  --warn: #f2b531;
+  --danger: #e5384f;
+  --radius: 4px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Semantic UI mappings & backwards compatibility */
+  --background: var(--bg-ink);
+  --text: var(--text-on-dark);
+  --muted: var(--text-on-dark-muted);
+  --border: var(--line-dark);
+  --primary: var(--brand);
+  --secondary: var(--text-on-dark);
+
+  /* Light Theme Tokens (used in merchant portal) */
+  --bg-app: #fafafa;
+  --bg-app-subtle: #f4f4f5;
+  --surface: #ffffff;
+  --surface-border: rgba(0, 0, 0, 0.06);
+  --surface-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  --surface-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.08);
+
+  /* Typography Colors */
+  --text-primary: #111113;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+
+  /* Accent Red Gradient & Glass */
+  --brand-from: #ff6b5e;
+  --brand-to: #e0262f;
+  --red-gradient: linear-gradient(135deg, #ff6b5e 0%, #e0262f 100%);
+  --red-glass-shadow: 0 8px 20px rgba(224, 38, 47, 0.25);
+  --red-glass-glow: 0 4px 16px rgba(224, 38, 47, 0.35);
+
+  /* Status and Chips */
+  --chip-success-bg: #e6f4ea;
+  --chip-success-text: #1e7a3c;
+  --chip-neutral-bg: #f1f1f3;
+  --chip-neutral-text: #4b5563;
+  --box-mono-bg: #f6f6f7;
+  --box-mono-border: rgba(0, 0, 0, 0.04);
+  --box-mono-text: #111113;
+
+  /* Header & Action Buttons */
+  --header-btn-bg: #ffffff;
+  --header-btn-border: rgba(0, 0, 0, 0.06);
+  --header-btn-border-hover: rgba(0, 0, 0, 0.14);
+  --header-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  /* Secondary Buttons */
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-border: rgba(0, 0, 0, 0.08);
+  --btn-secondary-border-hover: rgba(0, 0, 0, 0.16);
+  --btn-secondary-text: #111113;
+  --btn-secondary-hover-bg: #f9f9fa;
+
+  /* Bottom Nav Dock */
+  --dock-bg: rgba(255, 255, 255, 0.78);
+  --dock-border: rgba(0, 0, 0, 0.06);
+  --dock-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --nav-item-inactive: #9ca3af;
+  --nav-item-inactive-hover: #4b5563;
+
+  --ok-light: #2fbf71;
+  --warn-light: #f2b531;
+
+  /* Radii */
+  --radius-card: 24px;
+  --radius-button: 16px;
+  --radius-tile: 14px;
+  --radius-tab: 16px;
+  --radius-pill: 9999px;
+}
+
+[data-theme="dark"],
+.dark {
+  /* Dark Theme Tokens: Warm near-black (#0D0A09), cards lifted (#16110F) */
+  --bg-app: #0d0a09;
+  --bg-app-subtle: #140f0d;
+  --surface: #16110f;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --surface-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.45);
+
+  /* Typography Colors */
+  --text-primary: #f5f5f4;
+  --text-secondary: #a8a29e;
+  --text-muted: #78716c;
+
+  /* Accent Red Gradient & Glass */
+  --brand-from: #ff6b5e;
+  --brand-to: #e0262f;
+  --red-gradient: linear-gradient(135deg, #ff6b5e 0%, #e0262f 100%);
+  --red-glass-shadow: 0 8px 20px rgba(224, 38, 47, 0.2);
+  --red-glass-glow: 0 4px 14px rgba(224, 38, 47, 0.25);
+
+  /* Status and Chips */
+  --chip-success-bg: rgba(47, 191, 113, 0.16);
+  --chip-success-text: #4ade80;
+  --chip-neutral-bg: #221c1a;
+  --chip-neutral-text: #d6d3d1;
+  --box-mono-bg: #1e1816;
+  --box-mono-border: rgba(255, 255, 255, 0.06);
+  --box-mono-text: #f5f5f4;
+
+  /* Header & Action Buttons */
+  --header-btn-bg: #16110f;
+  --header-btn-border: rgba(255, 255, 255, 0.1);
+  --header-btn-border-hover: rgba(255, 255, 255, 0.2);
+  --header-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  /* Secondary Buttons */
+  --btn-secondary-bg: #16110f;
+  --btn-secondary-border: rgba(255, 255, 255, 0.1);
+  --btn-secondary-border-hover: rgba(255, 255, 255, 0.18);
+  --btn-secondary-text: #f5f5f4;
+  --btn-secondary-hover-bg: #201917;
+
+  /* Bottom Nav Dock */
+  --dock-bg: rgba(22, 17, 15, 0.85);
+  --dock-border: rgba(255, 255, 255, 0.08);
+  --dock-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --nav-item-inactive: #78716c;
+  --nav-item-inactive-hover: #a8a29e;
+
+  --ok-light: #4ade80;
+  --warn-light: #fbbf24;
+}
+
+/* Hero Landing Page Scoped Isolation (DESIGN.md Section 2)
+   Strictly immune to theme toggle — retains exact Altius dark/peach rhythm */
+.landing-page {
+  --bg-app: #120907;
+  --bg-app-subtle: #1c0f0b;
+  --surface: #1c0f0b;
+  --surface-border: rgba(255, 75, 31, 0.35);
+  --surface-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --box-mono-bg: #120907;
+  --box-mono-border: rgba(255, 75, 31, 0.35);
+  --box-mono-text: #f6e9e3;
+  --text-primary: #f6e9e3;
+  --text-secondary: #b79e94;
+  --text-muted: #b79e94;
+  --brand: #ff4b1f;
+  --brand-soft: #ff8a66;
+  --brand-deep: #b7280a;
+  background-color: #120907;
+  color: #f6e9e3;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  font-family:
+    var(--font-satoshi),
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+/* Visible keyboard focus everywhere (DESIGN.md §9): 2px brand ring, 2px offset. */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Satoshi font application for all headings, body, nav, and buttons */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+nav,
+input,
+select,
+textarea {
+  font-family:
+    var(--font-satoshi),
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+/* Phosphor duotone icons: secondary layer uses brand orange accent */
+svg path[opacity="0.2"] {
+  fill: var(--brand);
+  opacity: 0.35;
+}
+
+/* Animation utilities */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scanline {
+  0% {
+    top: 0%;
+    opacity: 0.3;
+  }
+  50% {
+    top: 96%;
+    opacity: 1;
+  }
+  100% {
+    top: 0%;
+    opacity: 0.3;
+  }
+}
+
+.animate-scanline {
+  animation: scanline 4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* Optional hero phone float — delete this block + the class on the hero <img> to remove.
+   Moves downward only so the bottom-bleed edge never reveals a gap. */
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.animate-hero-float {
+  animation: heroFloat 6s ease-in-out infinite;
+}
+
+@keyframes verdictReveal {
+  0% {
+    transform: translateY(12px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-verdict-reveal {
+  animation: verdictReveal 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes shieldResolve {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-shield-resolve {
+  animation: shieldResolve 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee {
+    animation: none !important;
+    transform: none !important;
+  }
+  .animate-scanline {
+    animation: none !important;
+  }
+  .animate-hero-float {
+    animation: none !important;
+    transform: none !important;
+  }
+  .animate-verdict-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-shield-resolve {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Glassmorphic Design System Utilities (Themed) */
+.card-glass {
+  background-color: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--surface-shadow);
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+/* Animated Flowing Red Gradient Halo on Main Cards */
+@property --glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes glow-spin {
+  0% {
+    --glow-angle: 0deg;
+  }
+  100% {
+    --glow-angle: 360deg;
+  }
+}
+
+@keyframes glow-flow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: var(--glow-opacity-min, 0.45);
+  }
+  50% {
+    opacity: var(--glow-opacity-max, 0.58);
+  }
+}
+
+.card-glow {
+  position: relative;
+  isolation: isolate;
+  --glow-opacity-min: 0.45;
+  --glow-opacity-max: 0.58;
+  --glow-blur: 22px;
+}
+
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: 8px 12px -14px 12px;
+  z-index: -1;
+  border-radius: inherit;
+  filter: blur(var(--glow-blur));
+  pointer-events: none;
+  will-change: transform, filter;
+
+  /* Approach B: Flowing linear gradient fallback for browsers without @property */
+  background: linear-gradient(
+    120deg,
+    rgba(255, 107, 94, 0.55),
+    rgba(224, 38, 47, 0.35),
+    rgba(255, 140, 120, 0.45),
+    rgba(224, 38, 47, 0.3),
+    rgba(255, 107, 94, 0.55)
+  );
+  background-size: 300% 300%;
+  animation:
+    glow-flow 10s ease-in-out infinite,
+    glow-pulse 6s ease-in-out infinite;
+}
+
+/* Approach A: Rotating conic gradient with @property when supported */
+@supports (background: conic-gradient(from 0deg, red, blue)) {
+  .card-glow::before {
+    background: conic-gradient(
+      from var(--glow-angle),
+      rgba(255, 107, 94, 0.55),
+      rgba(224, 38, 47, 0.35),
+      rgba(255, 140, 120, 0.45),
+      rgba(224, 38, 47, 0.3),
+      rgba(255, 107, 94, 0.55)
+    );
+    background-size: 100% 100%;
+    animation:
+      glow-spin 8s linear infinite,
+      glow-pulse 6s ease-in-out infinite;
+  }
+}
+
+/* Dark mode: softer halo (~0.30 opacity, 26px blur) to prevent neon wash */
+[data-theme="dark"] .card-glow,
+.dark .card-glow {
+  --glow-opacity-min: 0.25;
+  --glow-opacity-max: 0.32;
+  --glow-blur: 26px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-glow::before {
+    animation: none !important;
+    opacity: var(--glow-opacity-min, 0.45) !important;
+  }
+}
+
+.btn-red-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 94, 0.95) 0%,
+    rgba(224, 38, 47, 0.95) 100%
+  );
+  background-color: #e0262f; /* solid fallback */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    var(--red-glass-shadow);
+  border-radius: var(--radius-button);
+  color: #ffffff;
+  transition:
+    transform 0.15s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-red-glass:active {
+  transform: scale(0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 4px 12px rgba(224, 38, 47, 0.2);
+}
+
+.btn-pill-secondary {
+  background-color: var(--btn-secondary-bg);
+  border: 1px solid var(--btn-secondary-border);
+  border-radius: var(--radius-pill);
+  color: var(--btn-secondary-text);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+
+.btn-pill-secondary:hover {
+  background-color: var(--btn-secondary-hover-bg);
+  border-color: var(--btn-secondary-border-hover);
+}
+
+.chip-success-pill {
+  background-color: var(--chip-success-bg);
+  color: var(--chip-success-text);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  display: inline-flex;
+  align-items: center;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.chip-neutral-pill {
+  background-color: var(--chip-neutral-bg);
+  color: var(--chip-neutral-text);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  display: inline-flex;
+  align-items: center;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.mono-box-container {
+  background-color: var(--box-mono-bg);
+  border: 1px solid var(--box-mono-border);
+  border-radius: var(--radius-tile);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  color: var(--box-mono-text);
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+
+.nav-dock-glass {
+  background-color: var(--dock-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--dock-border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--dock-shadow);
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.nav-tab-active-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 94, 0.95) 0%,
+    rgba(224, 38, 47, 0.95) 100%
+  );
+  background-color: #e0262f; /* solid fallback */
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    var(--red-glass-shadow);
+  border-radius: var(--radius-tab);
+  color: #ffffff;
+}
+
+.ai-orb-red-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 94, 0.95) 0%,
+    rgba(224, 38, 47, 0.95) 100%
+  );
+  background-color: #e0262f; /* solid fallback */
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    var(--red-glass-glow);
+  border-radius: var(--radius-pill);
+  color: #ffffff;
+}

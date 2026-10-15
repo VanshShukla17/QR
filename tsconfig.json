@@ -1,8 +1,17 @@
 {
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
+  },
   "files": [],
-  "references": [
-    { "path": "./packages/shared" },
-    { "path": "./apps/api" },
-    { "path": "./apps/web" }
-  ]
+  "references": [{ "path": "packages/shared" }, { "path": "apps/api" }]
 }
