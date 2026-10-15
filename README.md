@@ -260,10 +260,10 @@ The stack and component roles are specified in the project architecture. final_q
 
 ## 7. Team Members
 
-- **Vansh Shukla** — Cybersecurity & Blockchain
-- **`<TEAM MEMBER 2>`** — `<ROLE>`
-- **`<TEAM MEMBER 3>`** — `<ROLE>`
-- **`<TEAM MEMBER 4>`** — `<ROLE>`
+- ** VANSH SHUKLA ** — CYBERSECURITY & BLOCKCHAIN
+- ** HARSHIL SHARMA **— AGENTIC AI
+- ** KUSHAL KUMAR ** — BACKEND
+- ** TAJINDER SINGH DURSAL ** — FRONTEND
 
 > Replace the placeholders with your actual team members and roles. The uploaded PDF does not contain the complete team-member list.
 
