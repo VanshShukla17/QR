@@ -1,14 +1,14 @@
 # QRaksha
 
 > **A physical-trust layer for UPI QR codes — verify whether the QR in front of you was actually supposed to be there.**
-
+Link - https://qraksha.vercel.app/
 ---
 
 ## 1. Problem
 
-### PS Number: `<PS 8>`
+### PS Number: PS 8
 
-### PS Title: `<EASY PAY AND SAFE PAY>`
+### PS Title: EASY PAY AND SAFE PAY
 
 UPI applications can verify **who receives the money after a QR is scanned**, but they cannot verify whether the **physical QR sticker is genuine, cloned, replaced, or moved to another location**.
 
