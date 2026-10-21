@@ -1,7 +1,6 @@
 # QRaksha
 
 > **A physical-trust layer for UPI QR codes — verify whether the QR in front of you was actually supposed to be there.**
-Link - https://qraksha.vercel.app/
 ---
 
 ## 1. Problem
